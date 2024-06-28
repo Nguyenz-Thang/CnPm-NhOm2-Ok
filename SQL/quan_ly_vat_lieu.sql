@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 28, 2024 lúc 06:53 AM
+-- Thời gian đã tạo: Th6 28, 2024 lúc 05:20 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -38,21 +38,16 @@ CREATE TABLE `donhang` (
   `tenkh` varchar(100) NOT NULL,
   `sdt` int(11) NOT NULL,
   `diachi` varchar(200) NOT NULL,
-  `ghichu` varchar(300) NOT NULL
+  `ghichu` varchar(300) NOT NULL,
+  `duyetdon` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `donhang`
 --
 
-INSERT INTO `donhang` (`id`, `idvl`, `tenvl`, `soluong`, `donvi`, `gia`, `tongtien`, `tenkh`, `sdt`, `diachi`, `ghichu`) VALUES
-(9, 4, 'Đá ', 10, 'tấn', 100000, 1000000, 'Nguyễn Tất Thắng', 865416387, '17 ngõ 179 Triều Khúc, Tân Triều, Thanh Trì, Hà Nội.', ''),
-(10, 1, 'Xi măng', 498, 'bao', 1200000, 597600000, 'Nguyễn Tất Thắng', 865416387, '17 ngõ 179 Triều Khúc, Tân Triều, Thanh Trì, Hà Nội.', ''),
-(12, 7, 'Xi Măng', 20000, 'bao', 1100000, 22000000000, 'Nguyễn Tất Thắng', 865416387, '17 ngõ 179 Triều Khúc, Tân Triều, Thanh Trì, Hà Nội.', 'nhanh'),
-(13, 4, 'Cát xây dựng', 10001, 'tấn', 200000, 2000200000, 'Nguyễn Tất Thắng', 345667708, '17 ngõ 179 Triều Khúc, Tân Triều, Thanh Trì, Hà Nội.', ''),
-(14, 7, 'Xi Măng', 20000, 'bao', 1100000, 22000000000, 'Nguyễn Tất Thắng', 345667708, '17 ngõ 179 Triều Khúc, Tân Triều, Thanh Trì, Hà Nội.', ''),
-(15, 7, 'Xi Măng', 7503, 'bao', 1100000, 8253300000, 'Nguyễn Tất Thắng', 345667708, '17 ngõ 179 Triều Khúc, Tân Triều, Thanh Trì, Hà Nội.', ''),
-(16, 4, 'Sắt', 3556, 'cây', 200000, 711200000, 'Nguyễn Tất Thắng', 345667708, '17 ngõ 179 Triều Khúc, Tân Triều, Thanh Trì, Hà Nội.', '');
+INSERT INTO `donhang` (`id`, `idvl`, `tenvl`, `soluong`, `donvi`, `gia`, `tongtien`, `tenkh`, `sdt`, `diachi`, `ghichu`, `duyetdon`) VALUES
+(20, 3, 'Đá ', 1, 'tấn', 100000, 100000, 'Nguyễn Tất Thắng', 865416387, '17 ngõ 179 Triều Khúc, Tân Triều, Thanh Trì, Hà Nội.', '', 1);
 
 -- --------------------------------------------------------
 
@@ -92,13 +87,13 @@ CREATE TABLE `materials` (
 INSERT INTO `materials` (`id`, `name`, `quantity`, `price`, `unit`, `image`) VALUES
 (1, 'Gạch', 50046, '10000', 'viên', 'uploads/gạch.jpg'),
 (2, 'Đá lát nền', 4000, '100000', 'viên', 'uploads/đá lát.jpg'),
-(3, 'Đá ', 40, '100000', 'tấn', 'uploads/đá.jpg'),
+(3, 'Đá ', 2, '100000', 'tấn', 'uploads/đá.jpg'),
 (4, 'Sắt', 0, '200000', 'cây', 'uploads/sắt.jpg'),
 (5, 'Cát xây', 1000, '150000', 'tấn', 'uploads/cát.jpg'),
 (6, 'Xi Măng', 0, '1100000', 'bao', 'uploads/xi măng.jpg'),
 (7, 'Xi Măng', 500, '900000', 'bao', 'uploads/xi măng.jpg'),
 (8, 'Xi Măng ', 5000, '800000', 'bao', 'uploads/gạch.jpg'),
-(9, 'Xi Măng ol', 5000, '800000', 'bao', 'uploads/đá.jpg');
+(9, 'Xi Măng ol', 11, '800000', 'bao', 'uploads/đá.jpg');
 
 -- --------------------------------------------------------
 
@@ -110,15 +105,17 @@ CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
-  `email` varchar(30) NOT NULL
+  `email` varchar(30) NOT NULL,
+  `role` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`) VALUES
-(0, 'admin', 'admin', '');
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`) VALUES
+(0, 'admin', 'admin', '', 1),
+(0, 'nd', 'nd', '', 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -152,7 +149,7 @@ ALTER TABLE `materials`
 -- AUTO_INCREMENT cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `inventory_history`
