@@ -195,7 +195,8 @@
             exit;
         }
         $tongtien = $soluong *$gia;
-        $sqlInsertOrder = "INSERT INTO donhang VALUES ('$id','$idvl','$tenvl', '$soluong', '$donvi', '$gia',$tongtien, '$tenkh', '$sdt', '$diachi', '$ghichu')";
+        $don = 0;
+        $sqlInsertOrder = "INSERT INTO donhang VALUES ('$id','$idvl','$tenvl', '$soluong', '$donvi', '$gia',$tongtien, '$tenkh', '$sdt', '$diachi', '$ghichu', '$don')";
         if ($conn->query($sqlInsertOrder) === TRUE) {
             echo "Đặt hàng thành công";
         } else {
@@ -216,7 +217,7 @@
             if (soluongValue <= 0 || soluongValue > <?php echo $quantity; ?>) {
                 event.preventDefault(); // Ngăn không cho form submit đi
                 alert(
-                    'Số lượng không hợp lệ. <?php echo $quantity;?> , Vui lòng kiểm tra lại.'
+                    'Số lượng không hợp lệ. nhỏ hơn <?php echo $quantity;?> , Vui lòng kiểm tra lại.'
                 );
             }
         });

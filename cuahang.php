@@ -250,6 +250,12 @@ $materials = getMaterials();
         background-color: #006064;
         color: coral;
     }
+
+    #tk {
+        background-color: #006064;
+        border-color: #006064;
+
+    }
     </style>
 </head>
 
@@ -259,6 +265,8 @@ $materials = getMaterials();
     </header>
     <div class="menu">
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#gt">Giới thiệu</button>
+        <button id="tk" type="button" class="btn btn-success"><a href="dangnhap.php"><i
+                    class='bx bxs-user'></i></a></button>
     </div>
     <div class="modal" id="gt">
         <div class="modal-dialog">

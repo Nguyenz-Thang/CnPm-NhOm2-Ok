@@ -102,16 +102,16 @@
   <body>
     <main>
       <div class="login-container">
-        <h2>Đăng Nhập</h2>
-        <form action="login.php" method="POST">
+        <h2>Đăng Ký</h2>
+        <form action="create_account.php" method="POST">
           <label for="username">Tên Đăng Nhập:</label>
           <input type="text" id="username" name="username" required />
 
           <label for="password">Mật Khẩu:</label>
           <input type="password" id="password" name="password" required />
 
-          <button type="submit">Đăng Nhập</button>
-          <p>Chưa có tài khoản?</p><a href="dangky.php">Đăng kí</a>
+          <button type="submit">Đăng ký</button>
+          <p>Đã có tài khoản?</p><a href="dangnhap.php">Đăng nhập</a>
         </form>
       </div>
     </main>

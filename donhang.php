@@ -13,10 +13,25 @@
         padding: 0;
     }
 
-    h1 {
+    header {
+        background-color: cadetblue;
+        color: white;
+        padding: 10px 0;
         text-align: center;
-        color: #333;
-        margin-top: 20px;
+        position: relative;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 2em;
+    }
+
+    header a img {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 40px;
     }
 
     table {
@@ -83,7 +98,11 @@
 </head>
 
 <body>
-    <h1>Quản lí Đơn hàng</h1>
+    <header>
+        <h1>Quản lí Đơn hàng</h1>
+        <a href="dashboard.php"><img src="./img/qdd.png" alt="Logo"></a>
+    </header>
+
     <?php
     // Kết nối cơ sở dữ liệu
     $servername = "localhost";
