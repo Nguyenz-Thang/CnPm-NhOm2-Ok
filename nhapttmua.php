@@ -216,7 +216,7 @@
             if (soluongValue <= 0 || soluongValue > <?php echo $quantity; ?>) {
                 event.preventDefault(); // Ngăn không cho form submit đi
                 alert(
-                    'Số lượng không hợp lệ. Lớn hơn 0 và nhỏ hơn <?php echo $quantity;?> , Vui lòng kiểm tra lại.'
+                    'Số lượng không hợp lệ. <?php echo $quantity;?> , Vui lòng kiểm tra lại.'
                 );
             }
         });

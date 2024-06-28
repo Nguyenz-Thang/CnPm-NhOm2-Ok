@@ -155,7 +155,7 @@
     </header>
     <main>
         <section class="admin-section">
-            <h2>Tạo Tài Khoản Người Dùng</h2>
+            <h2>Tạo Tài Khoản</h2>
             <div class="form-container">
                 <form action="create_account.php" method="POST">
                     <label for="username">Tên Đăng Nhập:</label>
@@ -164,6 +164,10 @@
                     <label for="password">Mật Khẩu:</label>
                     <input type="password" id="password" name="password" required>
 
+                    <label for="role">Vai trò:</label>
+                    <input type="role" id="role" name="role" required>
+                        <option value="0">Người dùng thường: 0</option>
+                        <option value="1">Quản trị viên: 1</option>
 
 
                     <button type="submit">Tạo Tài Khoản</button>
