@@ -94,7 +94,7 @@
     }
 
     button {
-        background-color: #006064;
+        background-color: coral;
         color: white;
         padding: 10px 15px;
         border: none;
@@ -105,7 +105,7 @@
     }
 
     button:hover {
-        background-color: #006070;
+        background-color: orange;
         transform: translateY(-3px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
@@ -129,7 +129,7 @@
     }
 
     th {
-        background-color: #f2f2f2;
+        background-color: burlywood;
     }
 
     tbody tr:nth-child(even) {
@@ -139,17 +139,21 @@
     tbody tr:hover {
         background-color: #f1f1f1;
     }
+
+    h2 {
+        color: orange;
+    }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Hệ Thống Quản Lý Vật Liệu - Quản Trị Viên</h1>
+        <h2>Hệ Thống Quản Lý Vật Liệu - Quản Trị Viên</h2>
         <nav>
             <ul>
                 <li><a href="dashboard.php">Bảng Điều Khiển</a></li>
-                <li><a href="admin.php">Quản Lý Tài Khoản</a></li>
-                <li><a href="logout.php">Đăng Xuất</a></li>
+                <!-- <li><a href="admin.php">Quản Lý Tài Khoản</a></li>
+                <li><a href="logout.php">Đăng Xuất</a></li> -->
             </ul>
         </nav>
     </header>
@@ -166,8 +170,8 @@
 
                     <label for="role">Vai trò:</label>
                     <input type="role" id="role" name="role" required>
-                        <option value="0">Người dùng thường: 0</option>
-                        <option value="1">Quản trị viên: 1</option>
+                    <option value="0">Người dùng thường: 0</option>
+                    <option value="1">Quản trị viên: 1</option>
 
 
                     <button type="submit">Tạo Tài Khoản</button>
@@ -181,22 +185,28 @@
                     <tr>
                         <th>Tên Đăng Nhập</th>
                         <th>Mật Khẩu</th>
-
-                        <th>Hành Động</th>
+                        <th>Vai Trò</th>
+                        <th>Thao Tác</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     include 'config.php';
-                    $sql = "SELECT username,  password FROM users";
+                    $sql = "SELECT username,  password,role FROM users";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {
+                            if($row['role']==1){
+                                $tk = "Quản trị viên";
+                            }else{
+                                $tk = "Người dùng";
+                            }
                             echo "<tr>
                                     <td>{$row['username']}</td>
                                     
                                     <td>{$row['password']}</td>
+                                    <td>{$tk}</td>
                                     <td><button onclick=\"deleteUser('{$row['username']}')\"><i class='bx bxs-user-x'></i></button></td>
                                   </tr>";
                         }

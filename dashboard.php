@@ -189,6 +189,12 @@
         <a id="dx" href="index.php">Đăng xuất</a>
     </header>
     <div class="button-container">
+        <a href="admin.php">
+            <button class="custom-button">
+                <h1><i class='bx bxs-user-account'></i> Quản lí tài khoản</h1>
+            </button>
+        </a>
+
         <a href="quanli.php">
             <button class="custom-button">
                 <h1><i class='bx bxs-briefcase-alt-2'></i> Quản lí vật liệu</h1>
