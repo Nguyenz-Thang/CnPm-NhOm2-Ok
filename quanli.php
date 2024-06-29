@@ -59,22 +59,6 @@ function uploadImage($file) {
 
 
 // Hàm sửa thông tin vật liệu
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-    $id = $_POST['id'];
-    $name = $_POST['name'];
-    $quantity = $_POST['quantity'];
-    $price = $_POST['price'];
-    $unit = $_POST['unit'];
-    $image = uploadImage($_FILES['image']);
-    $sql = "UPDATE materials SET name='$name', quantity=$quantity, price=$price, unit='$unit'";
-    if ($image) {
-        $sql .= ", image='$image'";
-    }
-    $sql .= " WHERE id=$id";
-    $conn->query($sql);
-    header("Location: ".$_SERVER['PHP_SELF']);
-    exit();
-}
 
 // Hàm xóa vật liệu
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
@@ -137,14 +121,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #eef2f7;
+        background-color: #ffffff;
         margin: 0;
         padding: 0;
     }
 
     header {
-        background-color: #006064;
-        color: #fff;
+        background-color: darkcyan;
+        color: #ffffff;
         padding: 1rem;
         text-align: center;
         position: relative;
@@ -167,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
         width: 90%;
         max-width: 1200px;
         margin: 2rem auto;
-        background-color: #fff;
+        background-color: azure;
         padding: 2rem;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 1px;
@@ -180,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     }
 
     .material-card {
-        background-color: #f9f9f9;
+        background-color: #ffffff;
         border: 1px solid #ddd;
         border-radius: 8px;
         width: calc(16.66% - 1rem);
@@ -207,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     .material-card h3 {
         margin: 0;
         font-size: 1.2rem;
-        color: #006064;
+        color: #f57c00;
     }
 
     .material-card p {
@@ -233,12 +217,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
         border: none;
         cursor: pointer;
         font-size: 1.5rem;
-        color: #006064;
+        color: #f57c00;
     }
 
-    .but1:hover,
+    .but1:hover {
+        background-color: #ffffff;
+        color: #f57c00;
+    }
+
     .but2:hover {
-        color: #004d40;
+        color: #f57c00;
     }
 
     form {
@@ -264,21 +252,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     }
 
     .tkim {
-        background-color: #006064;
-        color: #fff;
+        background-color: #ddd;
+        color: #f57c00;
         padding: 0.5rem 1rem;
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        text-decoration: none;
+    }
+
+    .tkim:hover {
+        background-color: darkseagreen;
+        color: #f57c00;
+        text-decoration: none;
     }
 
     form button:hover {
-        background-color: #004d40;
+        background-color: #ffffff;
     }
 
     h2 {
-        color: #006064;
+        color: #f57c00;
         margin-bottom: 1rem;
+    }
+
+    #them {
+        background-color: #f57c00;
+        color: #ffffff;
     }
     </style>
 </head>
@@ -286,18 +286,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
 <body>
     <header>
         <a href="dashboard.php"><img src="./img/qdd.png" alt="Logo"></a>
-        <h1>Quản Lý Vật Liệu</h1>
+        <h1><b>Quản Lý Vật Liệu</b></h1>
 
     </header>
 
     <div class="container">
-        <h2>Danh Sách Vật Liệu</h2>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Thêm vật liệu
-            mới</button>
+        <h2><b>Danh Sách Vật Liệu</b></h2>
+        <button id="them" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal"><b>Thêm vật
+                liệu mới</b></button>
         <form method="POST">
             <input type="text" name="searchKeyword" placeholder="Nhập tên vật liệu...">
-            <button class="tkim" type="submit" name="search">Tìm Kiếm</button>
-            <button class="tkim" type="submit" class="huytim"><a href="quanli.php">Hủy Tìm Kiếm</a></button>
+            <button class="tkim" type="submit" name="search"><b>Tìm Kiếm</b></button>
+            <button class="tkim" type="submit" class="huytim"><a href="quanli.php"><b>Hủy Tìm Kiếm</b></a></button>
         </form>
         <div class="material-list">
             <?php foreach ($materials as $material) : ?>
@@ -327,10 +327,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
                                 onclick="return confirm('Bạn có chắc chắn muốn xóa không');"
                                 class='bx bx-trash'></i></button>
                     </form>
-                    <button class="but2" onclick="editMaterial('<?php echo $material['id']; ?>', '<?php echo $material['name']; ?>',
+                    <button class="but2" type="button" data-toggle="modal" data-target="#sua" onclick="editMaterial('<?php echo $material['id']; ?>', '<?php echo $material['name']; ?>',
                              '<?php echo $material['quantity']; ?>', '<?php echo $material['price']; ?>', 
-                             '<?php echo $material['unit']; ?>', '<?php echo $material['image']; ?>')">
-                        <i class='bx bx-edit'></i></button>
+                             '<?php echo $material['unit']; ?>', '<?php echo $material['image']; ?>')"><i
+                            class='bx bx-edit'></i></button>
                 </div>
             </div>
 
@@ -384,34 +384,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
                 </div>
             </div>
         </div>
+        <div class="modal" id="sua">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Form thêm vật liệu</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form action="suavl.php" method="POST" enctype="multipart/form-data">
+                            <h2>Sửa Vật Liệu</h2>
+                            <input type="hidden" id="edit_id" name="id">
+                            <div>
+                                <label for="edit_name">Tên Vật Liệu:</label>
+                                <input type="text" id="edit_name" name="name" required>
+                            </div>
+                            <div>
+                                <label for="edit_quantity">Số Lượng:</label>
+                                <input type="number" id="edit_quantity" name="quantity" required>
+                            </div>
+                            <div>
+                                <label for="edit_unit">Đơn Vị:</label>
+                                <input type="text" id="edit_unit" name="unit" required>
+                            </div>
+                            <div>
+                                <label for="edit_price">Giá:</label>
+                                <input type="number" id="edit_price" name="price" step="0.01" required>
+                            </div>
+                            <div>
+                                <label for="edit_image">Ảnh:</label>
+                                <input type="file" id="edit_image" name="image" accept="image/*">
+                            </div>
+
+                            <button type="submit" name="update">Cập Nhật</button>
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
 
-        <h2>Sửa Vật Liệu</h2>
-        <form method="POST" enctype="multipart/form-data">
-            <input type="hidden" id="edit_id" name="id">
-            <div>
-                <label for="edit_name">Tên Vật Liệu:</label>
-                <input type="text" id="edit_name" name="name" required>
-            </div>
-            <div>
-                <label for="edit_quantity">Số Lượng:</label>
-                <input type="number" id="edit_quantity" name="quantity" required>
-            </div>
-            <div>
-                <label for="edit_unit">Đơn Vị:</label>
-                <input type="text" id="edit_unit" name="unit" required>
-            </div>
-            <div>
-                <label for="edit_price">Giá:</label>
-                <input type="number" id="edit_price" name="price" step="0.01" required>
-            </div>
-            <div>
-                <label for="edit_image">Ảnh:</label>
-                <input type="file" id="edit_image" name="image" accept="image/*">
-            </div>
-
-            <button type="submit" name="update">Cập Nhật</button>
-        </form>
     </div>
 
     <script>

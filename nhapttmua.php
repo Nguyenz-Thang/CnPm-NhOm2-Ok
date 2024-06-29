@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Đặt Hàng</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -177,6 +179,7 @@
     </div>
 
     <?php
+    
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $id = "";
         $idvl = $idv;
@@ -184,27 +187,53 @@
         $soluong = $_POST['soluong'];
         $donvi = $_POST['donvi'];
         $gia = $_POST['gia'];
-        $tongtien = 
+        $tongtien = 0; // Khởi tạo $tongtien
         $tenkh = $_POST['tenkh'];
         $sdt = $_POST['sdt'];
         $diachi = $_POST['diachi'];
         $ghichu = $_POST['ghichu'];
         $sqlUpdateQuantity = "UPDATE materials SET quantity = quantity - $soluong WHERE id = $idv";
+
         if ($conn->query($sqlUpdateQuantity) !== TRUE) {
-            echo "Lỗi cập nhật số lượng vật liệu: " . $conn->error;
+            $message = "Lỗi cập nhật số lượng vật liệu: " . $conn->error;
+            $type = "error";
+            echo "<script type='text/javascript'>
+                Swal.fire({
+                    title: '$message',
+                    icon: '$type',
+                    confirmButtonText: 'OK'
+                });
+            </script>";
             exit;
         }
-        $tongtien = $soluong *$gia;
-        $don = 0;
-        $sqlInsertOrder = "INSERT INTO donhang VALUES ('$id','$idvl','$tenvl', '$soluong', '$donvi', '$gia',$tongtien, '$tenkh', '$sdt', '$diachi', '$ghichu', '$don')";
-        if ($conn->query($sqlInsertOrder) === TRUE) {
-            echo "Đặt hàng thành công";
-        } else {
-            echo "Lỗi đặt hàng: " . $conn->error;
-        }
-    }
 
-    $conn->close();
+        $tongtien = $soluong * $gia;
+        $don = 0;
+        $sqlInsertOrder = "INSERT INTO donhang VALUES ('$id','$idvl','$tenvl', '$soluong', '$donvi', '$gia', $tongtien, '$tenkh', '$sdt', '$diachi', '$ghichu', '$don')";
+
+        if ($conn->query($sqlInsertOrder) === TRUE) {
+            $message = "Đặt hàng thành công";
+            $type = "success";
+        } else {
+            $message = "Lỗi đặt hàng: " . $conn->error;
+            $type = "error";
+        }
+
+        // Đóng kết nối cơ sở dữ liệu
+        $conn->close();
+
+        echo "<script type='text/javascript'>
+            Swal.fire({
+                title: '$message',
+                icon: '$type',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'cuahang.php'; // Chuyển hướng về trang chủ hoặc trang khác sau khi người dùng nhấn OK
+                }
+            });
+        </script>";
+    }
     ?>
     <script>
     document.addEventListener("DOMContentLoaded", function() {

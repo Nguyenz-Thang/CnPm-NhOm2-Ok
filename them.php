@@ -72,11 +72,13 @@ function uploadImage($file) {
         header("Location: ".$_SERVER['PHP_SELF']);
         exit();
     }
+    header("Location: quanli.php");
 ?>
     <h3>Thêm Vật Liệu Thành Công</h3>
     <a href="quanli.php">
         <h3>Quay Lại Trang Quản Lí</h3>
     </a>
+
 </body>
 
 </html>

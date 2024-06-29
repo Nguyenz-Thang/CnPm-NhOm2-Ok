@@ -94,6 +94,11 @@
             form.submit();
         }
     }
+
+    function filterOrders(status) {
+        var url = 'filter_orders.php?status=' + status; // Thay đổi thành đường dẫn và file xử lý phù hợp
+        window.location.href = url;
+    }
     </script>
 </head>
 
@@ -102,6 +107,12 @@
         <h1>Quản lí Đơn hàng</h1>
         <a href="dashboard.php"><img src="./img/qdd.png" alt="Logo"></a>
     </header>
+
+    <div>
+        <!-- <button>Đơn đã duyệt</button>
+        <button>Đơn chưa duyệt</button>
+        <button>Tất cả đơn</button> -->
+    </div>
 
     <?php
     // Kết nối cơ sở dữ liệu

@@ -24,10 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Kiểm tra vai trò
         if ($role == 1) {
             // Điều hướng đến trang quản trị viên
-            header("Location: dashboard.php");
+            header("Location: dashboard.php?username=". $username_db);
         } else {
             // Điều hướng đến trang người dùng
-            header("Location: cuahang.php");
+            header("Location: cuahang.php?username=". $username_db);
         }
         exit();
     } else {

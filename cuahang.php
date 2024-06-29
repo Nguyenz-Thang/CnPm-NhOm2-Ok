@@ -26,6 +26,27 @@ function getMaterials() {
 }
 
 $materials = getMaterials();
+$materials = getMaterials();
+function searchMaterials($searchKeyword) {
+    global $conn;
+    $sql = "SELECT * FROM materials WHERE name LIKE '%$searchKeyword%'";
+    $result = $conn->query($sql);
+    $materials = array();
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $materials[] = $row;
+        }
+    }
+    return $materials;
+}
+
+// Xử lý tìm kiếm khi có yêu cầu POST từ form tìm kiếm
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
+    $searchKeyword = $_POST['searchKeyword'];
+    $materials = searchMaterials($searchKeyword);
+} else {
+    $materials = getMaterials();
+}
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +72,6 @@ $materials = getMaterials();
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #eef2f7;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -214,14 +234,16 @@ $materials = getMaterials();
     }
 
     .mua {
-        background-color: #006064;
+        background-color: cadetblue;
         color: #fff;
-        border: 1px solid #006064;
+
+        color: antiquewhite;
     }
 
     .mua:hover {
-        background-color: #004d40;
+        background-color: mediumseagreen;
         border-color: #004d40;
+        text-decoration: none;
     }
 
     .gio {
@@ -247,14 +269,102 @@ $materials = getMaterials();
         width: 100%;
         padding: 1.1rem 0;
         text-align: center;
-        background-color: #006064;
+        background-color: beige;
         color: coral;
     }
 
-    #tk {
-        background-color: #006064;
-        border-color: #006064;
+    #dx:hover {
+        text-decoration: none;
+    }
 
+    #gioithieu {
+        background-color: cadetblue;
+        /* Màu nền */
+        color: #fff;
+        /* Màu chữ */
+        border: none;
+        /* Không có viền */
+        padding: 10px 20px;
+        /* Khoảng cách bên trong */
+        border-radius: 4px;
+        /* Đường viền cong */
+        cursor: pointer;
+        /* Con trỏ chuột */
+        transition: background-color 0.3s, color 0.3s;
+        /* Hiệu ứng chuyển đổi màu */
+    }
+
+    #gioithieu:hover {
+        background-color: darkblue;
+        /* Màu nền khi di chuột qua */
+    }
+
+    #tk {
+        background-color: beige;
+        /* Màu nền */
+        color: brown;
+        /* Màu chữ */
+        border: none;
+        /* Không có viền */
+        padding: 10px 20px;
+        /* Khoảng cách bên trong */
+        border-radius: 4px;
+        /* Đường viền cong */
+        cursor: pointer;
+        /* Con trỏ chuột */
+        transition: background-color 0.3s, color 0.3s;
+        /* Hiệu ứng chuyển đổi màu */
+    }
+
+    .mua.disabled {
+        pointer-events: none;
+        /* Ngăn chặn sự kiện click */
+        color: #ccc;
+        /* Màu chữ xám */
+        text-decoration: none;
+        /* Không gạch chân */
+        cursor: default;
+        /* Con trỏ mặc định */
+    }
+
+    .tkim {
+        /* Button styles, assuming this is your search button */
+        background-color: #006064;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        text-decoration: none;
+    }
+
+    .tkim:hover {
+        background-color: #004d40;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        /* Padding around text inside input */
+        margin-right: 10px;
+        /* Space between input and buttons */
+        border: 1px solid #ddd;
+        /* Border color */
+        border-radius: 4px;
+        /* Rounded corners */
+        font-size: 16px;
+        /* Font size */
+        width: 300px;
+        /* Adjust width as needed */
+        transition: border-color 0.3s ease;
+        /* Transition effect for border color */
+    }
+
+    input[type="text"]:focus {
+        border-color: dodgerblue;
+        /* Border color when input is focused */
+        outline: none;
+        /* Remove default focus outline */
     }
     </style>
 </head>
@@ -264,9 +374,19 @@ $materials = getMaterials();
         <h1><i class='bx bxs-basket'></i> Cửa Hàng <i class='bx bxs-basket'></i></h1>
     </header>
     <div class="menu">
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#gt">Giới thiệu</button>
-        <button id="tk" type="button" class="btn btn-success"><a href="dangnhap.php"><i
-                    class='bx bxs-user'></i></a></button>
+        <button type="button" id="gioithieu" data-toggle="modal" data-target="#gt">Giới thiệu</button>
+        <div class="taikhoan">
+            <?php 
+            if (!isset($_GET["username"]) || $_GET["username"] === null) {
+                // Xử lý khi username không tồn tại hoặc là null
+            } else {
+                $idd = $_GET["username"];
+            }
+           
+            ?>
+            <button id="tk" type="button"><i class='bx bxs-user'></i></button>
+            <a id="dx" href="index.php">Đăng xuất</a>
+        </div>
     </div>
     <div class="modal" id="gt">
         <div class="modal-dialog">
@@ -309,6 +429,11 @@ $materials = getMaterials();
         </div>
     </div>
     <div class="container">
+        <form method="POST">
+            <input type="text" name="searchKeyword" placeholder="Nhập tên vật liệu...">
+            <button class="tkim" type="submit" name="search">Tìm Kiếm</button>
+            <button class="tkim" type="submit" class="huytim"><a href="cuahang.php">Hủy Tìm Kiếm</a></button>
+        </form>
         <h2>Các Vật Liệu</h2>
         <div class="material-list">
             <?php foreach ($materials as $material) : ?>

@@ -55,4 +55,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Đóng kết nối cơ sở dữ liệu
 $conn->close();
+
 ?>
