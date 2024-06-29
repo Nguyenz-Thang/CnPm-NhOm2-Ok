@@ -61,7 +61,7 @@
         text-align: right;
     }
 
-    .form-actions input[type="submit"],
+    .form-actions input[type="button"],
     .form-actions a {
         padding: 10px 20px;
         font-size: 16px;
@@ -73,12 +73,12 @@
         color: #fff;
     }
 
-    .form-actions input[type="submit"] {
+    .form-actions input[type="button"] {
         background-color: red;
         color: #fff;
     }
 
-    .form-actions input[type="submit"]:hover {
+    .form-actions input[type="button"]:hover {
         background-color: brown;
     }
 
@@ -103,7 +103,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "quan_ly_vat_lieu"; // Tên cơ sở dữ liệu bạn đã tạo
+    $dbname = "quan_ly_vat_lieu";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
@@ -127,7 +127,7 @@
     }
     ?>
     <div class="container">
-        <form method="POST" class="order-form">
+        <form method="POST" class="order-form" id="orderForm">
             <h2 id="title"><i class='bx bx-basket'></i> Nhập Thông Tin Để Hoàn Tất Đặt Hàng <i class='bx bx-basket'></i>
             </h2>
 
@@ -173,13 +173,12 @@
 
             <div class="form-actions">
                 <a href="cuahang.php">Quay lại</a>
-                <input type="submit" name="luu" value="Đặt Hàng">
+                <input type="button" id="btnXemThongTin" value="Xem Thông Tin">
             </div>
         </form>
     </div>
 
     <?php
-    
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $id = "";
         $idvl = $idv;
@@ -187,11 +186,13 @@
         $soluong = $_POST['soluong'];
         $donvi = $_POST['donvi'];
         $gia = $_POST['gia'];
-        $tongtien = 0; // Khởi tạo $tongtien
+        $tongtien = $soluong * $gia; // Tính tổng tiền
         $tenkh = $_POST['tenkh'];
         $sdt = $_POST['sdt'];
         $diachi = $_POST['diachi'];
         $ghichu = $_POST['ghichu'];
+
+        // Cập nhật số lượng vật liệu trong kho
         $sqlUpdateQuantity = "UPDATE materials SET quantity = quantity - $soluong WHERE id = $idv";
 
         if ($conn->query($sqlUpdateQuantity) !== TRUE) {
@@ -207,7 +208,7 @@
             exit;
         }
 
-        $tongtien = $soluong * $gia;
+        // Thêm đơn hàng mới vào cơ sở dữ liệu
         $don = 0;
         $sqlInsertOrder = "INSERT INTO donhang VALUES ('$id','$idvl','$tenvl', '$soluong', '$donvi', '$gia', $tongtien, '$tenkh', '$sdt', '$diachi', '$ghichu', '$don')";
 
@@ -235,19 +236,51 @@
         </script>";
     }
     ?>
+
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const form = document.querySelector('.order-form');
+        const form = document.getElementById('orderForm');
+        const btnXemThongTin = document.getElementById('btnXemThongTin');
+        const soluongInput = document.getElementById('soluong');
+        const giaInput = document.getElementById('gia');
+        const tenkhInput = document.getElementById('tenkh');
+        const sdtInput = document.getElementById('sdt');
+        const diachiInput = document.getElementById('diachi');
+        const ghichuInput = document.getElementById('ghichu');
 
-        form.addEventListener('submit', function(event) {
-            const soluongInput = document.getElementById('soluong');
+        btnXemThongTin.addEventListener('click', function() {
             const soluongValue = parseInt(soluongInput.value);
+            const giaValue = parseFloat(giaInput.value);
+            const tongtien = soluongValue * giaValue;
+            const tenkhValue = tenkhInput.value;
+            const sdtValue = sdtInput.value;
+            const diachiValue = diachiInput.value;
+            const ghichuValue = ghichuInput.value;
 
             if (soluongValue <= 0 || soluongValue > <?php echo $quantity; ?>) {
-                event.preventDefault(); // Ngăn không cho form submit đi
-                alert(
-                    'Số lượng không hợp lệ. nhỏ hơn <?php echo $quantity;?> , Vui lòng kiểm tra lại.'
-                );
+                alert('Số lượng không hợp lệ. Vui lòng kiểm tra lại.');
+            } else {
+                Swal.fire({
+                    title: 'Thông tin đặt hàng',
+                    html: `
+                        <p>Tên vật liệu: <?php echo htmlspecialchars($name); ?></p>
+                        <p>Số lượng: ${soluongValue}</p>
+                        <p>Giá: ${giaValue}</p>
+                        <p>Tổng tiền: ${tongtien}</p>
+                        <p>Họ tên: ${tenkhValue}</p>
+                        <p>Số điện thoại: ${sdtValue}</p>
+                        <p>Địa chỉ: ${diachiValue}</p>
+                        <p>Ghi chú: ${ghichuValue}</p>
+                    `,
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Xác nhận',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Gửi form khi người dùng nhấn "Thanh toán"
+                    }
+                });
             }
         });
     });

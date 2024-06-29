@@ -366,6 +366,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
         outline: none;
         /* Remove default focus outline */
     }
+
+    #donmua {
+        background-color: cadetblue;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 10px;
+        /* Thêm margin để cách các phần tử khác */
+    }
+
+    #donmua:hover {
+        background-color: mediumseagreen;
+    }
     </style>
 </head>
 
@@ -434,6 +452,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
             <button class="tkim" type="submit" name="search">Tìm Kiếm</button>
             <button class="tkim" type="submit" class="huytim"><a href="cuahang.php">Hủy Tìm Kiếm</a></button>
         </form>
+        <a id="donmua" href="donmua.php">Đơn mua</a>
         <h2>Các Vật Liệu</h2>
         <div class="material-list">
             <?php foreach ($materials as $material) : ?>
