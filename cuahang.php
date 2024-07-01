@@ -476,8 +476,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
                     <p id="gia">Giá: <?php echo ' '. number_format($material["price"], 0, ',', '.') . ' VNĐ';  ?></p>
                 </b>
                 <div class="actions">
-                    <a class="gio" href="giohang.php?id=<?php echo $material['id']; ?>"><i
-                            class='bx bx-cart-add'></i></a>
+                    <a class="gio" href="#?id=<?php echo $material['id']; ?>"><i class='bx bx-cart-add'></i></a>
                     <a class="mua" href="nhapttmua.php?id=<?php echo $material['id']; ?>">Mua</a>
                 </div>
             </div>

@@ -333,6 +333,7 @@ $history = getInventoryHistory();
                     <th>Vật Liệu</th>
                     <th>Số Lượng</th>
                     <th>Đơn Vị</th>
+                    <th>Thời gian</th>
                     <th>Kho</th>
                 </tr>
             </thead>
@@ -343,6 +344,7 @@ $history = getInventoryHistory();
                     <td><?php echo $item['name']; ?></td>
                     <td><?php echo $item['quantity']; ?></td>
                     <td><?php echo $item['unit']; ?></td>
+                    <td><?php echo $item['created_at']; ?></td>
                     <td><?php echo $item['remaining_quantity']; ?></td>
                 </tr>
                 <?php endforeach; ?>
